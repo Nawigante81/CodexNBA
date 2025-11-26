@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -73,9 +73,16 @@ async def prompt_output(prompt_id: str):
 async def upload_odds_screenshot(files: List[UploadFile] = File(...)):
     saved_files = []
     for upload in files:
-        destination = UPLOAD_DIR / upload.filename
+        safe_name = Path(upload.filename).name
+        if not safe_name:
+            raise HTTPException(status_code=400, detail="Invalid filename")
+        destination = (UPLOAD_DIR / safe_name).resolve()
+
+        if not destination.is_relative_to(UPLOAD_DIR):
+            raise HTTPException(status_code=400, detail="Invalid filename")
+
         destination.write_bytes(await upload.read())
-        saved_files.append({"filename": upload.filename, "path": str(destination)})
+        saved_files.append({"filename": safe_name, "path": str(destination)})
     return {"message": "Files saved", "files": saved_files}
 
 

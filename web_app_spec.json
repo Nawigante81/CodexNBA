@@ -1,0 +1,154 @@
+{
+  "project_scope": {
+    "season": "2025/26",
+    "focus_teams": ["Celtics", "Wolves", "Thunder", "Magic", "Cavs", "Kings", "Rockets", "Knicks", "Bulls"],
+    "coverage": [
+      "NBA analytics + betting guide centered on focus teams",
+      "Chicago Bulls granular player-by-player breakdown: form, minutes, rotation, trends, injury, status"
+    ]
+  },
+  "data_sources": {
+    "required": [
+      "Basketball-Reference: game logs, schedules, box scores",
+      "VegasInsider: closing lines (spread, totals, moneyline) from Bet365, William Hill, Pinnacle; include ATS/OU results",
+      "NBA.com + major sports news: injury reports, game notes, recaps"
+    ],
+    "odds_intake": [
+      "User-uploaded odds screenshots mandatory; use placeholders until uploaded",
+      "Store source, book, timestamp, market type, team/player, line, price"
+    ],
+    "refresh_cadence": [
+      "Pre-game sync: 6-8 hrs before tip + 90 mins before",
+      "Post-game sync: within 60 mins of final"
+    ]
+  },
+  "data_model": {
+    "entities": [
+      "Team: ratings, pace, offense/defense, rest, travel, injuries",
+      "Player: team, role, position, status, usage, minutes, form (PTS/REB/AST last 5-10), shooting splits",
+      "Game: date, home/away, opponent, schedule context, lineup, injuries, pace, matchups",
+      "BetLine: market (spread/total/moneyline/props), book, open/close, price, result vs spread/total",
+      "OddsScreenshot: file ref, book, market, timestamp, parsed odds or placeholders"
+    ],
+    "bulls_player_fields": [
+      "player, PTS, REB, AST, role, minutes, rotation, trends, injury, current_status"
+    ]
+  },
+  "analytics_methodology": {
+    "pre_game": [
+      "Expected lineups with injury status (O/Q/D/OUT)",
+      "Pace, offense/defense ratings, head-to-head, rest/travel, positional matchups",
+      "Compare closing lines vs model projections; flag deviations for spread/OU/props"
+    ],
+    "player_form_defaults": [
+      "Last 5-10 games window",
+      "Metrics: PTS/REB/AST, usage%, minutes, role, shooting efficiency, trend direction"
+    ],
+    "betting_props": [
+      "General parlay: 3-5 low-risk legs",
+      "Bulls parlay: 2-5 legs (spread, total, player props)",
+      "Each leg: description, odds (screenshot or placeholder), reasoning, confidence (Low/Medium/High)",
+      "Provide alt_safe_versions with conservative lines"
+    ],
+    "quality_gates": [
+      "Must highlight/confirm injuries before publish",
+      "If odds screenshots missing, insert placeholders + prompt for upload"
+    ]
+  },
+  "features": {
+    "team_dashboards": [
+      "Focus teams overview with pace, ratings, ATS/OU record, recent form",
+      "Clickable Bulls detail tab with player-by-player breakdown"
+    ],
+    "game_pages": [
+      "Pre-game scouting: who plays, injuries, expected lineups, pace, matchup notes",
+      "Closing line comparison vs model; highlight deviations and edge",
+      "Post-game recap: result vs closing spread/total, key trends"
+    ],
+    "bets_module": [
+      "User uploads odds screenshots; system parses or marks placeholders",
+      "Generate general parlay + Bulls parlay with alt_safe_versions",
+      "Show confidence, reasoning bullets, risks"
+    ],
+    "pro_version": [
+      "Full functionality unlocked: automated odds screenshot ingestion + parsing, no placeholders when uploads present",
+      "Custom model sliders, saved parlays, export to CSV/PDF for bets and scouting reports",
+      "User management with roles (analyst, admin), audit logs, and API access for data pulls",
+      "Localized UI (EN/PL) with configurable odds_request copy and notification settings"
+    ],
+    "notifications": [
+      "Injury updates and line moves alerts",
+      "Daily prompt outputs at 7:50/8:00/11:00 in app dashboard"
+    ]
+  },
+  "ux_copy_style": {
+    "rules": [
+      "Bullet points or brief lines only; avoid verbose prose",
+      "Each field <= 1 sentence; max ~6 bullets per list",
+      "Always end analyses with a ⚠️ Risks section"
+    ],
+    "languages": [
+      "English default; odds_request may localize (e.g., Polish prompt sample)"
+    ]
+  },
+  "prompts_and_outputs": {
+    "prompt_1_previous_day": {
+      "time": "7:50 AM",
+      "output_order": ["results_vs_closing", "top_trends", "bulls_players", "next_day_key_insights"],
+      "notes": [
+        "results_vs_closing: team, ATS covered/not, O/U over/under, 1-2 line context",
+        "top_trends: top 3 bullets",
+        "bulls_players: PTS/REB/AST/role/minutes/rotation/injuries; null+warning if missing",
+        "next_day_key_insights: 1-2 bullets"
+      ]
+    },
+    "prompt_2_morning": {
+      "time": "8:00 AM",
+      "output_order": ["results_one_line", "seven_day_trends", "bulls_players_form", "betting_directions", "odds_request"],
+      "notes": [
+        "results_one_line: team, result, ATS, O/U",
+        "seven_day_trends: pace, off/def rating, shooting%, rotation",
+        "bulls_players_form: PTS/REB/AST last 5, role, avg minutes; null/warning if missing",
+        "betting_directions: 2-3 bullets",
+        "odds_request: explicit if screenshots missing"
+      ]
+    },
+    "prompt_3_gameday": {
+      "time": "11:00 AM",
+      "output_order": ["todays_slate", "matchup_notes", "bulls_scouting", "bet_proposals", "risks"],
+      "notes": [
+        "todays_slate: games, times, injuries with status O/Q/D/OUT",
+        "matchup_notes: pace, positional matchups, rebounding, inside vs 3PT",
+        "bulls_scouting: last game recap, last-5 form per player, strengths/weaknesses, initial lean with justification",
+        "bet_proposals: general parlay + Bulls parlay; each leg odds (screenshot/placeholder), reasoning, confidence; alt_safe_versions",
+        "risks: late scratches, B2B, travel, injuries, missing odds"
+      ]
+    }
+  },
+  "flow_rules": {
+    "analysis_before_conclusion": "Always place reasoning bullets before insights/bets",
+    "missing_data_handling": [
+      "Use null/MISSING placeholders when stats absent",
+      "Repeat odds upload request in odds_request/risks when screenshots absent"
+    ],
+    "ordering": "Maintain JSON key order exactly per prompt",
+    "length": "Keep bullets concise; 1 sentence max"
+  },
+  "tech_stack": {
+    "frontend": ["React or Next.js", "Tailwind/Chakra for bullet UI", "Responsive dashboards"],
+    "backend": ["Node/Express or Python/FastAPI", "Scheduled jobs for data pulls", "Rate limits + caching"],
+    "storage": ["PostgreSQL for structured data", "S3/Blob for screenshots", "Redis for caching"],
+    "integrations": ["Headless browser or HTML parsers for Basketball-Reference/VegasInsider", "News/ injury feed polling"]
+  },
+  "governance": {
+    "alerts_and_risks": [
+      "Injury confirmations mandatory before bet publish",
+      "Flag stale odds or missing screenshots",
+      "Log data source timestamps and book names for compliance"
+    ],
+    "versioning": [
+      "Store prompt outputs per run with timestamps",
+      "Track model versions and projections per update"
+    ]
+  }
+}

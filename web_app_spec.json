@@ -70,12 +70,7 @@
       "Generate general parlay + Bulls parlay with alt_safe_versions",
       "Show confidence, reasoning bullets, risks"
     ],
-    "pro_version": [
-      "Full functionality unlocked: automated odds screenshot ingestion + parsing, no placeholders when uploads present",
-      "Custom model sliders, saved parlays, export to CSV/PDF for bets and scouting reports",
-      "User management with roles (analyst, admin), audit logs, and API access for data pulls",
-      "Localized UI (EN/PL) with configurable odds_request copy and notification settings"
-    ],
+
     "notifications": [
       "Injury updates and line moves alerts",
       "Daily prompt outputs at 7:50/8:00/11:00 in app dashboard"

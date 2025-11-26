@@ -1,4 +1,3 @@
-from datetime import datetime
 
 FOCUS_TEAMS = [
     "Celtics",
@@ -45,45 +44,7 @@ BULLS_PLAYERS = [
     },
 ]
 
-SAMPLE_RECENT_GAMES = [
-    {"home": "Bulls", "away": "Knicks", "home_score": 104, "away_score": 102, "date": "2024-03-10"},
-    {"home": "Wolves", "away": "Kings", "home_score": 113, "away_score": 108, "date": "2024-03-10"},
-    {"home": "Celtics", "away": "Cavs", "home_score": 118, "away_score": 114, "date": "2024-03-10"},
-]
 
-SAMPLE_CLOSING_LINES = [
-    {
-        "matchup": "Bulls @ Knicks",
-        "sportsbook": "Bet365",
-        "spread": "+3.5",
-        "total": "214.5",
-        "moneyline": "+135",
-        "result": "Under, Bulls covered",
-    },
-    {
-        "matchup": "Kings @ Wolves",
-        "sportsbook": "Pinnacle",
-        "spread": "-4.5",
-        "total": "222.5",
-        "moneyline": "-175",
-        "result": "Under, Wolves covered",
-    },
-]
-
-SAMPLE_INJURIES = [
-    {"team": "Bulls", "player": "Lonzo Ball", "status": "OUT", "note": "Knee rehab"},
-    {"team": "Knicks", "player": "RJ Barrett", "status": "Q", "note": "Illness"},
-    {"team": "Wolves", "player": "Jaden McDaniels", "status": "Q", "note": "Ankle"},
-]
-
-SAMPLE_SCHEDULE = [
-    {"team": "Bulls", "opponent": "Knicks", "date": "2024-03-12", "home": False},
-    {"team": "Bulls", "opponent": "Magic", "date": "2024-03-14", "home": True},
-]
-
-
-def build_prompt_payloads():
-    prompt_1 = {
         "results_vs_closing": [
             {
                 "team": "Bulls",
@@ -115,9 +76,7 @@ def build_prompt_payloads():
             "Monitor back-to-back fatigue for Bulls",
             "Magic trending over on totals last 3",
         ],
-    }
 
-    prompt_2 = {
         "results_one_line": [
             "Bulls L 102-104, covered +3.5, Under",
             "Knicks W 112-107, covered -4, Over",
@@ -142,9 +101,7 @@ def build_prompt_payloads():
             "Target Wolves unders vs slow teams",
         ],
         "odds_request": "Wrzuć świeże screeny z linii (DraftKings/Bet365) — placeholders used until upload",
-    }
 
-    prompt_3 = {
         "todays_slate": [
             {
                 "game": "Bulls @ Knicks",
@@ -216,22 +173,5 @@ def build_prompt_payloads():
             "Missing uploaded odds screenshots",
             "Travel fatigue",
         ],
-    }
 
-    return {"prompt_1": prompt_1, "prompt_2": prompt_2, "prompt_3": prompt_3}
-
-
-PROMPT_OUTPUTS = build_prompt_payloads()
-
-
-PIPELINE_CACHE = {
-    "last_run": None,
-    "sources": {},
-    "games": SAMPLE_RECENT_GAMES,
-    "closing_lines": SAMPLE_CLOSING_LINES,
-    "injuries": SAMPLE_INJURIES,
-    "schedule": SAMPLE_SCHEDULE,
-    "prompt_outputs": PROMPT_OUTPUTS,
-    "bulls_players": BULLS_PLAYERS,
-    "created_at": datetime.utcnow().isoformat(),
 }

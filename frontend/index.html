@@ -1,3 +1,4 @@
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,25 +9,12 @@
       section { margin-bottom: 1.5rem; }
       h2 { margin-bottom: 0.5rem; }
       pre { background: #f4f4f4; padding: 1rem; border-radius: 8px; }
-      button { margin-top: 0.5rem; }
+
     </style>
   </head>
   <body>
     <h1>CodexNBA Demo UI</h1>
-    <p>Live ingest snapshot, analytics summary, and odds upload workflow.</p>
 
-    <section>
-      <h2>Ingestion + Scheduler</h2>
-      <button onclick="refreshData()">Manual Refresh</button>
-      <button onclick="loadStatus()">Show Status</button>
-      <pre id="status"></pre>
-    </section>
-
-    <section>
-      <h2>Analytics Summary</h2>
-      <button onclick="loadAnalytics()">Load Analytics</button>
-      <pre id="analytics"></pre>
-    </section>
 
     <section>
       <h2>Focus Teams</h2>
@@ -58,32 +46,6 @@
     <script>
       const API_BASE = ""; // same origin
 
-      async function loadStatus() {
-        const res = await fetch(`${API_BASE}/api/ingestion/status`);
-        document.getElementById("status").textContent = JSON.stringify(
-          await res.json(),
-          null,
-          2
-        );
-      }
-
-      async function refreshData() {
-        const res = await fetch(`${API_BASE}/api/refresh`, { method: "POST" });
-        document.getElementById("status").textContent = JSON.stringify(
-          await res.json(),
-          null,
-          2
-        );
-      }
-
-      async function loadAnalytics() {
-        const res = await fetch(`${API_BASE}/api/analytics/summary`);
-        document.getElementById("analytics").textContent = JSON.stringify(
-          await res.json(),
-          null,
-          2
-        );
-      }
 
       async function loadTeams() {
         const res = await fetch(`${API_BASE}/api/teams`);

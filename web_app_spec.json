@@ -70,6 +70,7 @@
       "Generate general parlay + Bulls parlay with alt_safe_versions",
       "Show confidence, reasoning bullets, risks"
     ],
+
     "notifications": [
       "Injury updates and line moves alerts",
       "Daily prompt outputs at 7:50/8:00/11:00 in app dashboard"

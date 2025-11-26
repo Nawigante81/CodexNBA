@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodexNBA Demo</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; }
+      section { margin-bottom: 1.5rem; }
+      h2 { margin-bottom: 0.5rem; }
+      pre { background: #f4f4f4; padding: 1rem; border-radius: 8px; }
+    </style>
+  </head>
+  <body>
+    <h1>CodexNBA Demo UI</h1>
+    <p>Quick checks of API output and odds upload placeholders.</p>
+
+    <section>
+      <h2>Focus Teams</h2>
+      <button onclick="loadTeams()">Load Teams</button>
+      <pre id="teams"></pre>
+    </section>
+
+    <section>
+      <h2>Bulls Players</h2>
+      <button onclick="loadPlayers()">Load Bulls Players</button>
+      <pre id="players"></pre>
+    </section>
+
+    <section>
+      <h2>Prompt Outputs</h2>
+      <label for="prompt">Prompt ID (1, 2, or 3)</label>
+      <input id="prompt" type="text" value="1" />
+      <button onclick="loadPrompt()">Load Prompt Output</button>
+      <pre id="prompt-output"></pre>
+    </section>
+
+    <section>
+      <h2>Upload Odds Screenshots</h2>
+      <input type="file" id="odds-files" multiple />
+      <button onclick="uploadOdds()">Upload</button>
+      <pre id="upload-result"></pre>
+    </section>
+
+    <script>
+      const API_BASE = ""; // same origin
+
+      async function loadTeams() {
+        const res = await fetch(`${API_BASE}/api/teams`);
+        document.getElementById("teams").textContent = JSON.stringify(
+          await res.json(),
+          null,
+          2
+        );
+      }
+
+      async function loadPlayers() {
+        const res = await fetch(`${API_BASE}/api/bulls/players`);
+        document.getElementById("players").textContent = JSON.stringify(
+          await res.json(),
+          null,
+          2
+        );
+      }
+
+      async function loadPrompt() {
+        const promptId = document.getElementById("prompt").value;
+        const res = await fetch(`${API_BASE}/api/prompts/${promptId}`);
+        const data = await res.json();
+        document.getElementById("prompt-output").textContent = JSON.stringify(
+          data,
+          null,
+          2
+        );
+      }
+
+      async function uploadOdds() {
+        const input = document.getElementById("odds-files");
+        const formData = new FormData();
+        for (const file of input.files) {
+          formData.append("files", file);
+        }
+        const res = await fetch(`${API_BASE}/api/odds/upload`, {
+          method: "POST",
+          body: formData,
+        });
+        document.getElementById("upload-result").textContent = JSON.stringify(
+          await res.json(),
+          null,
+          2
+        );
+      }
+    </script>
+  </body>
+</html>

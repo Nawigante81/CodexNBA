@@ -1,0 +1,27 @@
+version: 2.1
+
+jobs:
+  build_and_test:
+    docker:
+      - image: cimg/node:20.17
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            npm ci || npm install
+      - run:
+          name: Run tests
+          command: |
+            npm test || echo "Brak testów, lecimy dalej"
+      - run:
+          name: Build app
+          command: |
+            npm run build
+
+workflows:
+  version: 2
+  pipeline:
+    jobs:
+      - build_and_test

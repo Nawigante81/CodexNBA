@@ -28,3 +28,4 @@ def test_prompt_lookup_success():
 def test_prompt_lookup_missing():
     res = client.get("/api/prompts/99")
     assert res.status_code == 404
+

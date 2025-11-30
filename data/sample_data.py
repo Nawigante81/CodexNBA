@@ -1,3 +1,4 @@
+
 FOCUS_TEAMS = [
     "Celtics",
     "Wolves",
@@ -43,8 +44,7 @@ BULLS_PLAYERS = [
     },
 ]
 
-PROMPT_OUTPUTS = {
-    "prompt_1": {
+
         "results_vs_closing": [
             {
                 "team": "Bulls",
@@ -76,8 +76,7 @@ PROMPT_OUTPUTS = {
             "Monitor back-to-back fatigue for Bulls",
             "Magic trending over on totals last 3",
         ],
-    },
-    "prompt_2": {
+
         "results_one_line": [
             "Bulls L 102-104, covered +3.5, Under",
             "Knicks W 112-107, covered -4, Over",
@@ -102,8 +101,7 @@ PROMPT_OUTPUTS = {
             "Target Wolves unders vs slow teams",
         ],
         "odds_request": "Wrzuć świeże screeny z linii (DraftKings/Bet365) — placeholders used until upload",
-    },
-    "prompt_3": {
+
         "todays_slate": [
             {
                 "game": "Bulls @ Knicks",
@@ -175,5 +173,5 @@ PROMPT_OUTPUTS = {
             "Missing uploaded odds screenshots",
             "Travel fatigue",
         ],
-    },
+
 }

@@ -1,4 +1,4 @@
-<!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,11 +9,12 @@
       section { margin-bottom: 1.5rem; }
       h2 { margin-bottom: 0.5rem; }
       pre { background: #f4f4f4; padding: 1rem; border-radius: 8px; }
+
     </style>
   </head>
   <body>
     <h1>CodexNBA Demo UI</h1>
-    <p>Quick checks of API output and odds upload placeholders.</p>
+
 
     <section>
       <h2>Focus Teams</h2>
@@ -44,6 +45,7 @@
 
     <script>
       const API_BASE = ""; // same origin
+
 
       async function loadTeams() {
         const res = await fetch(`${API_BASE}/api/teams`);

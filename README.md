@@ -28,7 +28,8 @@ Working scaffold for the CodexNBA 2025/26 analytics and betting guide with Bulls
 ## Scheduler + ingestion
 
 - An AsyncIO scheduler runs hourly to refresh Basketball-Reference box scores, VegasInsider closing lines, and NBA injury data.
-- Set `PIPELINE_OFFLINE=1` to force offline mode (uses bundled sample data without network).
+- Default mode uses live network calls for Basketball-Reference box scores, VegasInsider closing lines, and NBA injuries.
+- Set `PIPELINE_OFFLINE=1` to force offline mode (uses bundled sample data without network). When network is enabled and a fetch fails, the service now surfaces an empty payload instead of silently swapping in samples.
 - Cache is written to `data/pipeline_cache.json` after each refresh.
 
 ## Testing

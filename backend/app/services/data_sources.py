@@ -11,14 +11,13 @@ USER_AGENT = {"User-Agent": "Mozilla/5.0 (CodexNBA analytics bot)"}
 
 
 async def fetch_basketball_reference_snapshot(allow_network: bool = True) -> Dict:
-    fallback_games = SAMPLE_RECENT_GAMES
     url = "https://www.basketball-reference.com/boxscores/"
     if not allow_network:
         return {
             "source": "basketball_reference",
             "status": "offline",
             "fetched_at": datetime.utcnow().isoformat(),
-            "games": fallback_games,
+            "games": SAMPLE_RECENT_GAMES,
             "note": "Offline mode — using bundled sample games",
         }
 
@@ -32,7 +31,8 @@ async def fetch_basketball_reference_snapshot(allow_network: bool = True) -> Dic
             "status": "failed",
             "error": str(exc),
             "fetched_at": datetime.utcnow().isoformat(),
-            "games": fallback_games,
+            "games": [],
+            "note": "Live fetch failed; no sample data used when network is enabled",
         }
 
     soup = BeautifulSoup(resp.text, "html.parser")
@@ -61,25 +61,23 @@ async def fetch_basketball_reference_snapshot(allow_network: bool = True) -> Dic
                 "date": datetime.utcnow().date().isoformat(),
             }
         )
-    if not games:
-        games = fallback_games
     return {
         "source": "basketball_reference",
-        "status": "ok",
+        "status": "ok" if games else "empty",
         "fetched_at": datetime.utcnow().isoformat(),
         "games": games,
+        "note": None if games else "No games parsed from live source",
     }
 
 
 async def fetch_vegasinsider_lines(allow_network: bool = True) -> Dict:
-    fallback_lines = SAMPLE_CLOSING_LINES
     url = "https://www.vegasinsider.com/nba/odds/las-vegas/"
     if not allow_network:
         return {
             "source": "vegasinsider",
             "status": "offline",
             "fetched_at": datetime.utcnow().isoformat(),
-            "lines": fallback_lines,
+            "lines": SAMPLE_CLOSING_LINES,
             "note": "Offline mode — using bundled sample odds",
         }
 
@@ -93,7 +91,8 @@ async def fetch_vegasinsider_lines(allow_network: bool = True) -> Dict:
             "status": "failed",
             "error": str(exc),
             "fetched_at": datetime.utcnow().isoformat(),
-            "lines": fallback_lines,
+            "lines": [],
+            "note": "Live fetch failed; odds not replaced with sample data",
         }
 
     soup = BeautifulSoup(resp.text, "html.parser")
@@ -119,25 +118,23 @@ async def fetch_vegasinsider_lines(allow_network: bool = True) -> Dict:
             )
         if len(lines) >= 6:
             break
-    if not lines:
-        lines = fallback_lines
     return {
         "source": "vegasinsider",
-        "status": "ok",
+        "status": "ok" if lines else "empty",
         "fetched_at": datetime.utcnow().isoformat(),
         "lines": lines,
+        "note": None if lines else "No odds parsed from live source",
     }
 
 
 async def fetch_nba_injuries(allow_network: bool = True) -> Dict:
-    fallback_injuries = SAMPLE_INJURIES
     url = "https://cdn.nba.com/static/json/injury/injury_2023-24.json"
     if not allow_network:
         return {
             "source": "nba.com",
             "status": "offline",
             "fetched_at": datetime.utcnow().isoformat(),
-            "injuries": fallback_injuries,
+            "injuries": SAMPLE_INJURIES,
             "note": "Offline mode — using bundled injuries",
         }
 
@@ -151,7 +148,8 @@ async def fetch_nba_injuries(allow_network: bool = True) -> Dict:
             "status": "failed",
             "error": str(exc),
             "fetched_at": datetime.utcnow().isoformat(),
-            "injuries": fallback_injuries,
+            "injuries": [],
+            "note": "Live fetch failed; injury list empty until network succeeds",
         }
 
     payload = resp.json()
@@ -173,13 +171,12 @@ async def fetch_nba_injuries(allow_network: bool = True) -> Dict:
             )
         if len(injuries) >= 25:
             break
-    if not injuries:
-        injuries = fallback_injuries
     return {
         "source": "nba.com",
-        "status": "ok",
+        "status": "ok" if injuries else "empty",
         "fetched_at": datetime.utcnow().isoformat(),
         "injuries": injuries,
+        "note": None if injuries else "No injuries parsed from live source",
     }
 
 

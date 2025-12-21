@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -43,7 +43,7 @@ async def bulls_players():
 
 
 @app.get("/api/prompts/{prompt_id}")
-async def prompt_output(prompt_id: str):
+async def prompt_output(prompt_id: int):
     key = f"prompt_{prompt_id}"
     payload = PROMPT_OUTPUTS.get(key)
     if not payload:
@@ -51,10 +51,18 @@ async def prompt_output(prompt_id: str):
     return payload
 
 
+ALLOWED_IMAGE_TYPES = {"image/png", "image/jpeg", "image/webp", "image/jpg"}
+
+
 @app.post("/api/odds/upload")
 async def upload_odds_screenshot(files: List[UploadFile] = File(...)):
     saved_files = []
     for upload in files:
+        if upload.content_type not in ALLOWED_IMAGE_TYPES:
+            raise HTTPException(
+                status_code=400, detail="Only image uploads are supported for odds screenshots"
+            )
+
         destination = UPLOAD_DIR / upload.filename
         destination.write_bytes(await upload.read())
         saved_files.append({"filename": upload.filename, "path": str(destination)})
